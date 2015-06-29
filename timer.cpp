@@ -13,11 +13,12 @@ RSA* read_key() {
     printf("\n%s\n", "Error Reading private key");
     return NULL ;
   }
+/*
   printf("Read RSA key from %s\n", filename);
-  printf("N=");
+  */printf("N=");
   BN_print_fp(stdout, rsa->n);
   printf("\n");
-  printf("P=");
+  /*printf("P=");
   BN_print_fp(stdout, rsa->p);
   printf("\n");
   printf("Q=");
@@ -25,7 +26,7 @@ RSA* read_key() {
   printf("\n");
   printf("E=");
   BN_print_fp(stdout, rsa->e);
-  printf("\n");
+  printf("\n");*/
   printf("D=");
   BN_print_fp(stdout, rsa->d);
   printf("\n");
@@ -36,16 +37,10 @@ long long rsa_decrypt(RSA* key, BIGNUM *m) {
   BIGNUM *r = BN_new();
   BN_CTX *ctx = BN_CTX_new();
   clock_t startTime = clock();
-  for (int i=0; i<1000; i++) 
+  for (int i=0; i<10000; i++) 
     BN_mod_exp(r, m, key->d, key->n, ctx);
   long long result = (long long) clock() - startTime;
-  return result;
-}
-
-long long rsaEncryptTime(void *m) { //ttmath::UInt<2> m) {
-  clock_t startTime = clock();
-  long long result = (long long) clock() - startTime;
-  return result;
+  return result / 10000;
 }
 
 int main(int argc, char** argv) {
@@ -56,12 +51,14 @@ int main(int argc, char** argv) {
   RSA *rsa = read_key();
   BIGNUM *a = BN_new();
   BN_dec2bn(&a, argv[1]);
+  /*
   printf("M=");
   BN_print_fp(stdout, a);
   printf("\n");
+  */
   FILE* f = fopen("time.txt", "w");
   long long time = rsa_decrypt(rsa, a);
   fprintf(f, "%lld\n", time);
-  fprintf(stderr, "Time to decrypt = %lf\n", double(time)/CLOCKS_PER_SEC);
+  //fprintf(stderr, "Time to decrypt = %lf\n", double(time)/CLOCKS_PER_SEC);
   return 0;
 }

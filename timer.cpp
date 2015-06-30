@@ -1,7 +1,6 @@
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
-// #include <ttmath/ttmath.h>
 #include <openssl/rsa.h>
 #include <openssl/pem.h>
 
@@ -36,11 +35,18 @@ RSA* read_key() {
 long long rsa_decrypt(RSA* key, BIGNUM *m) {
   BIGNUM *r = BN_new();
   BN_CTX *ctx = BN_CTX_new();
-  clock_t startTime = clock();
-  for (int i=0; i<10000; i++) 
+  timespec tbegin, tend;
+
+  clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &tbegin);
+
+  for (int i=0; i<1000; i++) 
     BN_mod_exp(r, m, key->d, key->n, ctx);
-  long long result = (long long) clock() - startTime;
-  return result / 10000;
+
+  clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &tend);
+
+  long long start_time = tbegin.tv_sec*1000000000LL+tbegin.tv_nsec;
+  long long end_time = tend.tv_sec*1000000000LL+tend.tv_nsec;
+  return end_time-start_time;
 }
 
 int main(int argc, char** argv) {

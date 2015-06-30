@@ -4,6 +4,8 @@
 #include <openssl/rsa.h>
 #include <openssl/pem.h>
 
+using namespace std;
+
 RSA* read_key() {
   RSA *rsa = RSA_new();
   const char *filename = "private.pem";
@@ -36,11 +38,14 @@ long long rsa_decrypt(RSA* key, BIGNUM *m) {
   BIGNUM *r = BN_new();
   BN_CTX *ctx = BN_CTX_new();
   timespec tbegin, tend;
-
+  cerr << "Flag " << BN_get_flags(key->d, BN_FLG_CONSTTIME) << endl;
   clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &tbegin);
 
-  for (int i=0; i<1000; i++) 
-    BN_mod_exp(r, m, key->d, key->n, ctx);
+  for (int i=0; i<10000; i++) {
+    // BN_mod_exp(r, m, key->d, key->n, ctx);
+    // BN_mod_exp_simple(r, m, key->d, key->n, ctx);
+    BN_mod_exp_mont(r, m, key->d, key->n, ctx, NULL);
+  }
 
   clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &tend);
 

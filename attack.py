@@ -4,8 +4,10 @@ import sys
 import random
 from subprocess import call
 
+
 def oracle0(m_temp, m, N):
 	return m_temp ** 2 >= N ** 1.9
+
 
 def oracle1(m_temp, m, N):
 	m1 = (m * m_temp) % N
@@ -35,7 +37,7 @@ def main():
 	m = open('messages.txt', 'r')
 	for line in m:
 		msg = int(line)
-		M.append(msg)	
+		M.append(msg)
 		m1 = (msg ** 2) % N
 		m_temp.append(m1)
 

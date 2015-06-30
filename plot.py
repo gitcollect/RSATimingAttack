@@ -8,10 +8,11 @@ def show(filename):
     times = []
     for c in data:
         if len(c) >= 2:
-            times.append(c[1])
-    plt.hist(times, bins=1000)
+            times.append(c[-1])
+    times.sort()
+    plt.hist(times[100:-100], bins=1000)
     #plt.plot(sorted(times))
     plt.show()
 
 
-show("times_512_min.txt")
+show("mont_times_512_min.txt")

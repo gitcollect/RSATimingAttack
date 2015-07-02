@@ -128,11 +128,32 @@ def test_both(filename, N, k):
     p4 = sum(m4)/float(len(m4))
     print [p1, p2, p3, p4]
 
+data = None
+
+def next(filename, N, k):
+    global data
+    if not data:
+        data = [tuple(map(int, x.split())) for x in file(filename).readlines()[:5000]]
+    m1 = [c[1] for c in data if pravi_oracle1(c[0], k, N)]
+    m2 = [c[1] for c in data if not pravi_oracle1(c[0], k, N)]
+    m3 = [c[1] for c in data if pravi_oracle2(c[0], k, N)]
+    m4 = [c[1] for c in data if not pravi_oracle2(c[0], k, N)]
+    p1 = sum(m1)/float(len(m1))
+    p2 = sum(m2)/float(len(m2))
+    p3 = sum(m3)/float(len(m3))
+    p4 = sum(m4)/float(len(m4))
+    if (p1 - p2) > (p3 - p4):
+        return k*2+1
+    return k*2
+
+
 # test_oracle1("custom_mont_times_64_min.txt", N64)
 # print inv(mmult(332, 33, N64)[1], N64)
-# test_poracle1("custom_times_64.txt", N64, 16)
-# test_poracle2("custom_times_64.txt", N64, 16)
-D = 0x8685C83A1325B11
-for k in [1, 2, 4, 8, 16, 2*16+1]:
-    print hex(k),
-    test_both("custom_times_64.txt", N64, k)
+#test_poracle1("custom_times_64a.txt", N64, 1)
+#test_poracle2("custom_times_64a.txt", N64, 16)
+#D = 0x8685C83A1325B11
+
+k = 0x8
+for _ in xrange(2000):
+    k = next("custom_times_64a.txt", N64, k)
+    print hex(k)

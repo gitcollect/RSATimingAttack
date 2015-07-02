@@ -30,3 +30,18 @@ make
 kompajlniranje:
 g++ -o time_all.exe time_all.cpp /home/ante/openssl/libcrypto.a -O2 -ldl -lrt
 g++ -o time_mont.exe time_mont.cpp /home/ante/openssl/libcrypto.a -O2 -ldl -lrt
+
+diff --git a/crypto/bn/bn_exp.c b/crypto/bn/bn_exp.c
+index 10dc3eb..6613d1b 100644
+--- a/crypto/bn/bn_exp.c
++++ b/crypto/bn/bn_exp.c
+@@ -457,6 +457,7 @@ int BN_mod_exp_mont(BIGNUM *rr, const BIGNUM *a, const BIGNUM *p,
+         goto err;               /* 1 */
+ 
+     window = BN_window_bits_for_exponent_size(bits);
++    window = 1;
+     if (window > 1) {
+         if (!BN_mod_mul_montgomery(d, val[0], val[0], mont, ctx))
+             goto err;           /* 2 */
+diff --git a/crypto/bn/bn_mont.c b/crypto/bn/bn_mont.c
+

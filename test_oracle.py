@@ -154,6 +154,6 @@ def next(filename, N, k):
 #D = 0x8685C83A1325B11
 
 k = 0x8
-for _ in xrange(2000):
+for _ in xrange(64):
     k = next("custom_times_64a.txt", N64, k)
     print hex(k)

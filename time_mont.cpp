@@ -17,7 +17,7 @@ RSA* read_key(const char *filename) {
   fprintf(stderr, "N=");
   BN_print_fp(stderr, rsa->n);
   fprintf(stderr, "\n");
-  printf("P=");
+  fprintf(stderr, "P=");
   BN_print_fp(stderr, rsa->p);
   fprintf(stderr, "\n");
   fprintf(stderr, "Q=");
@@ -43,7 +43,7 @@ long long mont_mult_min(RSA* key, BIGNUM *a, BIGNUM *b) {
   BN_to_montgomery(mb, b, mont, ctx);
   timespec tbegin, tend;
   long long result = 1LL<<62;
-  for (int i=0; i<10000; i++) {
+  for (int i=0; i<1000; i++) {
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &tbegin);
     BN_mod_mul_montgomery(r, ma, mb, mont, ctx);
     clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &tend);
@@ -66,7 +66,7 @@ long long mont_mult_sum(RSA* key, BIGNUM *a, BIGNUM *b) {
   timespec tbegin, tend;
   long long result = 1LL<<62;
   clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &tbegin);
-  for (int i=0; i<10000; i++) {
+  for (int i=0; i<1000; i++) {
     BN_mod_mul_montgomery(r, ma, mb, mont, ctx);
   }
   clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &tend);
@@ -77,7 +77,7 @@ long long mont_mult_sum(RSA* key, BIGNUM *a, BIGNUM *b) {
 }
 
 int main() {
-  RSA *rsa = read_key("private512.pem");
+  RSA *rsa = read_key("private64.pem");
   BIGNUM *a = BN_new();
   BIGNUM *b = BN_new();
   char s[1024];

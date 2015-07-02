@@ -10,9 +10,9 @@ def show(filename):
         if len(c) >= 2:
             times.append(c[-1])
     times.sort()
-    plt.hist(times[100:-100], bins=1000)
+    plt.hist(times, bins=500)
     #plt.plot(sorted(times))
     plt.show()
 
 
-show("mont_times_512_min.txt")
+show("custom_times_64.txt")

@@ -1,0 +1,32 @@
+git clone https://github.com/openssl/openssl.git
+diff --git a/crypto/bn/bn_mont.c b/crypto/bn/bn_mont.c
+index c869101..809f982 100644
+--- a/crypto/bn/bn_mont.c
++++ b/crypto/bn/bn_mont.c
+@@ -119,7 +119,7 @@
+ #include "internal/cryptlib.h"
+ #include "bn_lcl.h"
+ 
+-#define MONT_WORD               /* use the faster word-based algorithm */
++#define DO_BO_NOT_USE_MONT_WORD               /* use the faster word-based algorithm */
+ 
+ #ifdef MONT_WORD
+ static int BN_from_montgomery_word(BIGNUM *ret, BIGNUM *r, BN_MONT_CTX *mont);
+@@ -217,7 +217,7 @@ static int BN_from_montgomery_word(BIGNUM *ret, BIGNUM *r, BN_MONT_CTX *mont)
+     rp = ret->d;
+     ap = &(r->d[nl]);
+ 
+-# define BRANCH_FREE 1
++# define BRANCH_FREE 0
+ # if BRANCH_FREE
+     {
+         BN_ULONG *nrp;
+
+
+kompajlira se openssl:
+./config
+make
+
+kompajlniranje:
+g++ -o time_all.exe time_all.cpp /home/ante/openssl/libcrypto.a -O2 -ldl -lrt
+g++ -o time_mont.exe time_mont.cpp /home/ante/openssl/libcrypto.a -O2 -ldl -lrt

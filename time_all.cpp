@@ -17,7 +17,7 @@ RSA* read_key(const char *filename) {
   fprintf(stderr, "N=");
   BN_print_fp(stderr, rsa->n);
   fprintf(stderr, "\n");
-  printf("P=");
+  fprintf(stderr, "P=");
   BN_print_fp(stderr, rsa->p);
   fprintf(stderr, "\n");
   fprintf(stderr, "Q=");
@@ -72,7 +72,7 @@ long long rsa_decrypt_sum(RSA* key, BIGNUM *m) {
 }
 
 int main() {
-  RSA *rsa = read_key("private512.pem");
+  RSA *rsa = read_key("private64.pem");
   BIGNUM *a = BN_new();
   char s[1024];
   int cnt = 0;
@@ -81,7 +81,7 @@ int main() {
     // fprintf(stderr, "M=");
     // BN_print_fp(stderr, a);
     // fprintf(stderr, "\n");
-    long long time = rsa_decrypt_sum(rsa, a);
+    long long time = rsa_decrypt_min(rsa, a);
     printf("%s %lld\n", s, time);
     cnt++;
     if (cnt % 1000 == 0)

@@ -41,14 +41,14 @@ def oracle1(x, y, n):
 
 def pravi_oracle1(x, k, n):
     m = x
-    m_temp = (m**k)**2 % n
+    m_temp = pow(m, k, n)**2 % n
     t = (m*m_temp) % n
     return oracle1(t, t, n)
 
 
 def pravi_oracle2(x, k, n):
     m = x
-    m_temp = (m**k)**2 % n
+    m_temp = pow(m, k, n)**2 % n
     t = (m_temp) % n
     return oracle1(t, t, n)
 
@@ -133,7 +133,7 @@ data = None
 def next(filename, N, k):
     global data
     if not data:
-        data = [tuple(map(int, x.split())) for x in file(filename).readlines()[:5000]]
+        data = [tuple(map(int, x.split())) for x in file(filename).readlines()]
     m1 = [c[1] for c in data if pravi_oracle1(c[0], k, N)]
     m2 = [c[1] for c in data if not pravi_oracle1(c[0], k, N)]
     m3 = [c[1] for c in data if pravi_oracle2(c[0], k, N)]
@@ -144,6 +144,10 @@ def next(filename, N, k):
     p4 = sum(m4)/float(len(m4))
     if (p1 - p2) > (p3 - p4):
         return k*2+1
+    del m1
+    del m2
+    del m3
+    del m4
     return k*2
 
 
